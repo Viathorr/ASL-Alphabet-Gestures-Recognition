@@ -1,1 +1,1 @@
-# asl-alphabet-gestures-recognition
+# ASL Alphabet Gestures Recognition 👐🏻🧬
