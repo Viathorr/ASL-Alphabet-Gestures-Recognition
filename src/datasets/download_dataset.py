@@ -1,13 +1,10 @@
 import os
 import kaggle
+from pathlib import Path
 
-root_dir = os.getcwd()
+root_dir = Path(__file__).resolve().parents[2]
+data_dir = root_dir / "data"
 
-if root_dir.endswith("src"):
-    # If the current working directory ends with "src", go up one level
-    root_dir = os.path.dirname(root_dir)
-
-data_dir = os.path.join(root_dir, "data")
 dataset_name = "lexset/synthetic-asl-alphabet"  # synthetic data
 unzip = True
 
