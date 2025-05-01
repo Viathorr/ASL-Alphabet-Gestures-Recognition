@@ -39,7 +39,6 @@ class RandomRotateFlip:
         return image, landmarks
 
     def rotate(self, image, landmarks, angle):
-        # Rotate image
         """
         Rotate the image and associated landmarks by a given angle.
 
@@ -51,13 +50,13 @@ class RandomRotateFlip:
         Returns:
             tuple: The rotated image and landmarks.
         """
-
+        # Rotate image
         image = TF.rotate(image, angle)
 
         # Rotate landmarks
         w, h = image.size
         
-        landmarks_pixel = landmarks[:, :2] * np.array([w, h])  # Only x and y
+        landmarks_pixel = landmarks * np.array([w, h,1])  # Only x and y
 
         center_3d = np.array([w / 2, h / 2, 0])  # Center coordinates in 3D (z=0)
 
@@ -66,15 +65,15 @@ class RandomRotateFlip:
         
         angle_rad = np.radians(angle)  
         rotation_matrix = np.array([
-            [np.cos(angle_rad), -np.sin(angle_rad)],
-            [np.sin(angle_rad),  np.cos(angle_rad)]
-        ])
+            [np.cos(angle_rad), -np.sin(angle_rad), 0],
+            [np.sin(angle_rad),  np.cos(angle_rad), 0],
+            [0, 0, 1]
+        ])  # Rotation around z-axis (keep z unchanged)
         
-        rotated_landmarks = np.dot(centered_landmarks, rotation_matrix)
-        rotated_landmarks = np.column_stack((rotated_landmarks, landmarks[:, 2]))  # Keep z-coordinates unchanged
+        rotated_landmarks = np.dot(centered_landmarks, rotation_matrix)  
         landmarks = rotated_landmarks + center_3d 
         
-        landmarks[:, :2] = landmarks[:, :2] / np.array([w, h])
+        landmarks = landmarks / np.array([w, h, 1])
         
         return image, landmarks
 
