@@ -1,12 +1,11 @@
 import numpy as np
-import torch
 import mediapipe as mp
 
 from src.utils.io import read_image
 
 
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.4)
+hands = mp_hands.Hands(static_image_mode=True, max_num_hands=1, min_detection_confidence=0.3)
 
 
 def get_img_hand_landmarks(image_path):
@@ -36,7 +35,7 @@ def get_img_hand_landmarks(image_path):
         return None
     
     
-def get_landmarks_coordinates(landmarks):
+def get_landmark_coordinates(landmarks):
     """
     Extracts the x, y, and z coordinates from a MediaPipe hand landmarks object.
 
@@ -46,12 +45,12 @@ def get_landmarks_coordinates(landmarks):
             this should be None.
 
     Returns:
-        np.ndarray or None: A numpy array of shape (21, 3) containing the 
+        np.ndarray: A numpy array of shape (21, 3) containing the 
             x, y, and z coordinates of each of the 21 hand landmarks. If 
-            landmarks is None, returns None.
+            landmarks is None, returns a numpy array of zeros.
     """
     if landmarks is None:
-        return None
+        return np.zeros((21, 3))
     
     coordinates = []
     for landmark in landmarks.landmark:
