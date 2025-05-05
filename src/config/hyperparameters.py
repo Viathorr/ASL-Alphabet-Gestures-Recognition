@@ -24,7 +24,7 @@ training_hyperparameters = {
     "num_coordinates": 3,  # x, y, z
     "num_epochs": 10,
     "learning_rate": 5e-3,
-    "weight_decay": 1e-4,  # for L2 regularization
+    "weight_decay": 1e-5,  # for L2 regularization
     "lr_scheduler_mode": "max",  # reduce LR on accuracy drop
     "lr_scheduler_factor": 0.5,
     "lr_scheduler_patience": 3
