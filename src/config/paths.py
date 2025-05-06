@@ -13,4 +13,4 @@ REAL_TEST_LANDMARKS_DIR = DATA_DIR / "asl-alphabet-test-landmarks"
 
 REPORTS_DIR = ROOT_DIR / "reports"
 
-MODEL_CHECKPOINTS_DIR = ROOT_DIR / "models" / "checkpoints"
+MODEL_CHECKPOINTS_DIR = ROOT_DIR / "src" / "models" / "checkpoints"
