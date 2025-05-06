@@ -25,7 +25,7 @@ def denormalize(tensor: torch.Tensor, mean=data_hyperparameters["mean"], std=dat
     return tensor
 
 
-def transform_image_and_landmarks(image, landmarks, transforms, rotate_flip=True, rotation_range=data_hyperparameters["rotation_range"], hflip_prob=data_hyperparameters["hflip_prob"], normalize_landmarks=True):
+def transform_image_and_landmarks(image, landmarks, transforms, rotate_flip=True, rotation_range=data_hyperparameters["rotation_range"], hflip_prob=data_hyperparameters["hflip_prob"], normalize=True):
     """
     Apply a given transformation to an image and its associated landmarks.
 
@@ -36,7 +36,7 @@ def transform_image_and_landmarks(image, landmarks, transforms, rotate_flip=True
         rotate_flip: If True, apply a random rotation and horizontal flip to the image and landmarks.
         rotation_range: The range of angles to randomly rotate the image and landmarks.
         hflip_prob: The probability of horizontally flipping the image and landmarks.
-        normalize_landmarks: If True, normalize the landmarks relative to the wrist.
+        normalize: If True, normalize the landmarks relative to the wrist.
 
     Returns:
         tuple: The transformed image and landmarks. The image is a tensor in shape (3, height, width),
@@ -46,7 +46,7 @@ def transform_image_and_landmarks(image, landmarks, transforms, rotate_flip=True
         rotate_flip_transform = RandomRotateFlip(rotation_range=rotation_range, horizontal_flip_prob=hflip_prob, return_tensor=False)
         image, landmarks = rotate_flip_transform(image, landmarks)  # landmarks are transformed, but still in range [0, 1], so we need to normalize and scale them
         
-    if normalize_landmarks:
+    if normalize:
         landmarks = normalize_landmarks(landmarks)
     
     return transforms(image), torch.from_numpy(landmarks)  # `image tensor` in shape (3, height, width); `landmarks tensor` in shape (n_landmarks, 3)  (n_landmarks = 21 in our case)
