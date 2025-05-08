@@ -1,9 +1,9 @@
-import os
-from pathlib import Path
 import numpy as np
 from torchvision.utils import make_grid
+import seaborn as sns
 import matplotlib.pyplot as plt
 import mediapipe as mp
+from sklearn.metrics import confusion_matrix
 from src.utils.io import read_image
 from src.utils.landmarks import get_img_hand_landmarks, mp_hands
 from src.utils.transform_utils import denormalize
@@ -112,6 +112,34 @@ def display_transformed_image(image_tensor, landmarks=None, title=None):
         plt.title(title)
     
     plt.axis("off")
+    fig = plt.gcf()
+    plt.show()
+    
+    return fig
+
+
+def plot_confusion_matrix(y_true, y_pred, class_names):
+    """
+    Plot a confusion matrix for a given set of true labels and predicted labels.
+
+    Args:
+        y_true (np.ndarray): The true labels, shape (n_samples,).
+        y_pred (np.ndarray): The predicted labels, shape (n_samples,).
+        class_names (list): The list of class names, shape (n_classes,).
+
+    Returns:
+        matplotlib.figure.Figure: The figure object containing the displayed confusion matrix.
+    """
+    cm = confusion_matrix(y_true, y_pred)
+
+    plt.figure(figsize=(10, 10))
+    sns.heatmap(cm, annot=True, fmt="d", annot_kws={"size": 10}, linewidths=1, square=True, cmap="coolwarm", xticklabels=class_names, yticklabels=class_names)
+
+    plt.xlabel("Predicted Label", fontsize=10)
+    plt.ylabel("True Label", fontsize=10)
+    plt.title("Confusion Matrix", fontsize=10)
+
+    plt.tight_layout()
     fig = plt.gcf()
     plt.show()
     
