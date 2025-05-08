@@ -38,7 +38,6 @@ if not cap.isOpened():
     exit()
 
 try:
-    print("Predicted message: ", end="")
     while True:
         ret, frame = cap.read()
         
