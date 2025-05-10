@@ -148,4 +148,4 @@ end_time = time.time()
 print(f"Training time: {end_time - start_time:.2f} seconds")
 
 # Save model's state dict
-# torch.save(model.state_dict(), MODEL_CHECKPOINTS_DIR / "model_state_dict.pth")
+torch.save(model.state_dict(), MODEL_CHECKPOINTS_DIR / "model_state_dict.pth")
