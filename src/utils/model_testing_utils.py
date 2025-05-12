@@ -40,7 +40,7 @@ def evaluate_model(model, dataloader, class_names=None):
 
     Returns the predicted labels and true labels as numpy arrays.
     """
-    all_preds, all_labels = get_predictions(model, dataloader)
+    all_labels, all_preds = get_predictions(model, dataloader)
 
     print("\n🔍 Evaluation Metrics:")
     print("Accuracy:", accuracy_score(all_labels, all_preds))
