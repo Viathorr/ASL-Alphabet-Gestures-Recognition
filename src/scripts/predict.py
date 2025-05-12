@@ -9,7 +9,7 @@ from src.config.paths import MODEL_CHECKPOINTS_DIR
 from src.utils.landmarks import get_landmark_coordinates
 from src.utils.transform_utils import transform_image_and_landmarks
 from src.transforms.transforms import get_test_transforms
-from logs.custom2_model import ASLAlphabetClassificationModel
+from src.models.alphabet_gesture_classification_model import ASLAlphabetClassificationModel
 
 msg = ""
 
@@ -20,10 +20,10 @@ signs.append("nothing")
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 test_transforms = get_test_transforms()
 
-model = ASLAlphabetClassificationModel()
+model = ASLAlphabetClassificationModel(26, 128, 128)
 
 # # Loading model's state dict
-model.load_state_dict(torch.load(MODEL_CHECKPOINTS_DIR / "model_state_dict.pth", map_location=device))
+model.load_state_dict(torch.load(MODEL_CHECKPOINTS_DIR / "model_state_dict (2).pth", map_location=device))
 model.to(device)
 model.eval()
 # Model takes as an input a tensor of normalized images of shape (batch_dim, 3, 224, 224) and normalized landmarks tensor of shape (batch_dim, 21, 3)
@@ -70,9 +70,9 @@ try:
             
             predicted_class = signs[pred.item()]
             
-        msg += predicted_class if predicted_class != "nothing" else " "
+        # msg += predicted_class if predicted_class != "nothing" else " "
         
-        cv2.putText(frame, msg, (10, 30),
+        cv2.putText(frame, predicted_class, (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         
         cv2.imshow('Webcam', frame)
@@ -80,7 +80,7 @@ try:
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         
-        time.sleep(2)  # wait for 2 seconds before next prediction
+        # time.sleep(2)  # wait for 2 seconds before next prediction
         
 finally:
     cap.release()

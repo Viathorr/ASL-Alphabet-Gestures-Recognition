@@ -49,3 +49,53 @@ def get_test_transforms():
     ])
     
     return test_transforms
+
+
+def get_grayscale_train_transforms():
+    """
+    Returns a transformation pipeline to be used for training images. This pipeline consists of:
+
+    1. Resizing the image to `img_size`.
+    2. Cropping the image to `img_crop_size` centered at the middle of the image.
+    3. Random color jittering.
+    4. Random Gaussian blurring.
+    5. Converting the image to a tensor.
+    6. Normalizing the tensor with the mean and standard deviation from the training dataset.
+
+    Returns:
+        train_transforms (torchvision.transforms.Compose): The transformation pipeline for training images.
+    """    
+    train_transforms = transforms.Compose([
+        transforms.Resize(data_hyperparameters["img_size"]),
+        transforms.CenterCrop(data_hyperparameters["img_crop_size"]),
+        transforms.Grayscale(1),
+        transforms.GaussianBlur(kernel_size=3, sigma=data_hyperparameters["gauss_blur_sigma"]),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.5], std=[0.5])
+    ])
+    
+    return train_transforms
+
+
+def get_grayscale_test_transforms():
+    """
+    Returns a transformation pipeline to be used for test images. This pipeline consists of:
+
+    1. Resizing the image to `img_crop_size`.
+    2. Converting the image to a tensor.
+    3. Normalizing the tensor with the mean and standard deviation from the training dataset.
+
+    Args:
+
+    Returns:
+        test_transforms (torchvision.transforms.Compose): The transformation pipeline for test images.
+    """
+    test_transforms = transforms.Compose([
+        transforms.Resize(data_hyperparameters["img_size"]),
+        transforms.CenterCrop(data_hyperparameters["img_crop_size"]),
+        transforms.Grayscale(1),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.5], std=[0.5])
+    ])
+    
+    return test_transforms
