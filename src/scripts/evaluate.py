@@ -8,7 +8,7 @@ from src.datasets.asl_alphabet_dataset import ASLAlphabetDataset
 from src.models.alphabet_gesture_classification_model import ASLAlphabetClassificationModel
 from src.config.paths import MODEL_CHECKPOINTS_DIR, REAL_TEST_IMG_DIR, REAL_TEST_LANDMARKS_DIR
 
-model_name = "grayscale_inception_model_state_dict.pth"
+model_name = "final_model_state_dict.pth"
 
 signs = list(string.ascii_uppercase)
 signs.remove("Z") 
