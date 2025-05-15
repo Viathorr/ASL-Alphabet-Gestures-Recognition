@@ -11,7 +11,7 @@ from src.utils.transform_utils import transform_image_and_landmarks
 from src.transforms.transforms import get_test_transforms, get_grayscale_test_transforms
 from src.models.alphabet_gesture_classification_model import ASLAlphabetClassificationModel
 
-model_name = "grayscale_inception_model_state_dict.pth"
+model_name = "final_model_state_dict.pth"
 msg = ""
 
 signs = list(string.ascii_uppercase)

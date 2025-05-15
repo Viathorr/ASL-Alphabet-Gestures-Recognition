@@ -22,7 +22,7 @@ def get_train_transforms():
         transforms.ColorJitter(brightness=data_hyperparameters["brightness"], contrast=data_hyperparameters["contrast"], saturation=data_hyperparameters["saturation"], hue=data_hyperparameters["hue"]),
         transforms.GaussianBlur(kernel_size=3, sigma=data_hyperparameters["gauss_blur_sigma"]),
         transforms.ToTensor(),
-        transforms.Normalize(mean=data_hyperparameters["mean"], std=data_hyperparameters["std"])
+        transforms.Normalize(mean=data_hyperparameters["rgb_mean"], std=data_hyperparameters["rgb_std"])
     ])
     
     return train_transforms
@@ -45,7 +45,7 @@ def get_test_transforms():
         # Using `img_crop_size` instead of `img_size` because we aren't using cropping here, just resizing
         transforms.Resize(data_hyperparameters["img_crop_size"]),
         transforms.ToTensor(),
-        transforms.Normalize(mean=data_hyperparameters["mean"], std=data_hyperparameters["std"])
+        transforms.Normalize(mean=data_hyperparameters["rgb_test_mean"], std=data_hyperparameters["rgb_test_std"])
     ])
     
     return test_transforms
@@ -69,9 +69,11 @@ def get_grayscale_train_transforms():
         transforms.Resize(data_hyperparameters["img_size"]),
         transforms.CenterCrop(data_hyperparameters["img_crop_size"]),
         transforms.Grayscale(1),
-        transforms.GaussianBlur(kernel_size=3, sigma=data_hyperparameters["gauss_blur_sigma"]),
+        transforms.RandomApply([
+            transforms.GaussianBlur(kernel_size=3, sigma=data_hyperparameters["gauss_blur_sigma"])
+        ], p=0.5),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5], std=[0.5])
+        transforms.Normalize(mean=data_hyperparameters["grayscale_mean"], std=data_hyperparameters["grayscale_std"]),
     ])
     
     return train_transforms
@@ -95,7 +97,7 @@ def get_grayscale_test_transforms():
         transforms.CenterCrop(data_hyperparameters["img_crop_size"]),
         transforms.Grayscale(1),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5], std=[0.5])
+        transforms.Normalize(mean=data_hyperparameters["grayscale_test_mean"], std=data_hyperparameters["grayscale_test_std"]),
     ])
     
     return test_transforms

@@ -11,13 +11,18 @@ data_hyperparameters = {
     "contrast": 0.2,
     "saturation": 0.1,
     "hue": 0.1,
-    # "mean": [0.485, 0.456, 0.406],
-    # "std": [0.229, 0.224, 0.225],
-    "mean": [0.5],
-    "std": [0.5],
+    # RGB mean and std need to be computed from the dataset
+    "rgb_mean": [0.485, 0.456, 0.406],
+    "rgb_std": [0.229, 0.224, 0.225],
+    "rgb_test_mean": [0.485, 0.456, 0.406],  
+    "rgb_test_std": [0.229, 0.224, 0.225],
+    "grayscale_mean": [0.473],  # 0.4734218597757503
+    "grayscale_std": [0.243],  # 0.24328415710831242
+    "grayscale_test_mean": [0.545],  # 0.5454909532256121
+    "grayscale_test_std": [0.212],  # 0.21164453086096316
     "train_shuffle": True,
     "test_shuffle": False,
-    "num_workers": torch.cuda.device_count() if torch.cuda.is_available() else 0
+    "num_workers": 0
 }
 
 training_hyperparameters = {

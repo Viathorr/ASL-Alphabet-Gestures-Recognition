@@ -1,10 +1,38 @@
 import torch
+from torch.utils.data import DataLoader
 from src.utils.landmarks import normalize_landmarks
 from src.config.hyperparameters import data_hyperparameters
 from src.transforms.image_landmark_transform import RandomRotateFlip
 
 
-def denormalize(tensor: torch.Tensor, mean=data_hyperparameters["mean"], std=data_hyperparameters["std"]):
+def compute_data_mean_std(dataloader: DataLoader) -> tuple:
+    """
+    Computes the mean and standard deviation of a given dataset.
+
+    Args:
+        dataloader (DataLoader): A DataLoader object containing the dataset.
+
+    Returns:
+        tuple: A tuple containing the mean and standard deviation of the dataset.
+    """
+    mean, std = 0., 0.
+    total_sum = 0.
+    total_squared_sum = 0.
+    total_num = 0
+
+    for images, _ in dataloader:
+        flattened_images = images.view(-1)  # (B*H*W)-shaped 1D tensor
+        total_num += flattened_images.numel()  # total num of pixels
+        total_sum += flattened_images.sum().item()  # sum of all pixel values
+        total_squared_sum += flattened_images.pow(2).sum().item()  # sum of squared pixel values
+        
+    # Compute mean and std
+    mean = total_sum / total_num
+    std = (total_squared_sum / total_num - mean ** 2) ** 0.5  # sqrt(E[x**2] - E[x]**2)  -  std formula
+    return mean, std
+
+
+def denormalize(tensor: torch.Tensor, mean=data_hyperparameters["grayscale_mean"], std=data_hyperparameters["grayscale_std"]):
     """
     Denormalize a tensor by multiplying each channel by a standard deviation value, 
     and then adding a mean value to each channel. This is the inverse of the 
