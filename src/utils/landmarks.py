@@ -33,6 +33,31 @@ def get_img_hand_landmarks(image_path):
         return hand_landmarks
     else:
         return None
+
+
+def get_img_hand_landmarks(image):
+    """
+    Detects hand landmarks in a given image using MediaPipe.
+
+    Args:
+        image: An image in a format compatible with MediaPipe, typically a PIL Image or numpy array.
+
+    Returns:
+        mediapipe.framework.formats.landmark_pb2.NormalizedLandmarkList or None:
+            If a hand is detected in the image, returns the landmarks for the first detected hand.
+            If no hand is detected, returns None.
+    """
+    if not isinstance(image, np.ndarray):
+        image = np.array(image)  # Ensure the image is a numpy array
+    
+    results = hands.process(image)
+    
+    if results.multi_hand_landmarks:
+        hand_landmarks = results.multi_hand_landmarks[0]
+        
+        return hand_landmarks
+    else:
+        return None
     
     
 def get_landmark_coordinates(landmarks):
