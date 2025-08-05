@@ -37,7 +37,7 @@ try:
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         rgb_img = Image.fromarray(rgb_frame)
         
-        predicted_class = predict_sign(model, rgb_img, device)
+        predicted_class, _ = predict_sign(model, rgb_img, device)
             
         # msg += predicted_class if predicted_class != "nothing" else " "
         

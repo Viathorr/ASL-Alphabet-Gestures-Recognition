@@ -39,8 +39,12 @@ def predict_sign(model, image, device):
         landmarks = landmarks.float().unsqueeze(0).to(device)
         
         logits = model(img, landmarks)
-        pred = logits.argmax(dim=1).item()  # Get the index of the maximum logit value
+        probs = torch.softmax(logits, dim=1)
+        pred = probs.argmax(dim=1).item()  # Get the index of the maximum logit value
         
-    return signs[pred]
+        confidence = probs[0, pred].item()  # Get the confidence value
+        
+        
+    return signs[pred], confidence
     
     
